@@ -39,7 +39,7 @@
         android:layout_gravity="center">
 
         <TextView
-            android:id="@+id/tvTimer"
+            android:id="@+id/timerSkip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00:00"
@@ -53,21 +53,21 @@
             android:layout_marginLeft="40dp">
 
             <Button
-                android:id="@+id/btnStart"
+                android:id="@+id/btnStartSkip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Start"
                 android:layout_margin="8dp" />
 
             <Button
-                android:id="@+id/btnPause"
+                android:id="@+id/btnPauseSkip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pause"
                 android:layout_margin="8dp" />
 
             <Button
-                android:id="@+id/btnReset"
+                android:id="@+id/btnResetSkip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reset"
