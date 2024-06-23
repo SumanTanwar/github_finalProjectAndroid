@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "517973693270",
+    "project_id": "fitnessbuilder-7fb4e",
+    "storage_bucket": "fitnessbuilder-7fb4e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517973693270:android:2a35f14e2be49dd0a23cf7",
+        "android_client_info": {
+          "package_name": "com.example.finalprojectandroid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHjlXngyZ3rE1FBw4w_9LkZ3Vc2GmmogI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
