@@ -1,9 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:gravity="center"
+    android:padding="20dp"
     android:layout_height="match_parent"
-    tools:context=".Yoga">
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="50dp"
+            android:textSize="40dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Yoga"/>
+        <ImageView
+            android:layout_width="190dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="60dp"
+            android:src="@drawable/yoga1"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Way to make Mind peaceful"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        android:layout_gravity="left"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/checkBoxMeditation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="            Meditation                   5 min" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSuryaNamaskar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="            Surya Namaskar        2 times" />
+
+        <CheckBox
+            android:id="@+id/checkBoxTreePose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="            Tree Pose                    3 min" />
+
+        <CheckBox
+            android:id="@+id/checkBoxCobraPose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="            Cobra Pose                 2 min" />
+
+        <CheckBox
+            android:id="@+id/checkBoxShukhasana"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="            Shukhasana                2 min" />
+
+        <CheckBox
+            android:id="@+id/checkBoxShabasana"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="            Shabasana                  1 min" />
+
+        <EditText
+            android:id="@+id/editTextCaloriesYoga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Calories Burned"
+            android:layout_marginTop="5dp"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/caloriesCalculateYoga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Calculate" />
+        <Button
+            android:id="@+id/buttonResetYoga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="     Reset    " />
+
+
+        <Button
+            android:id="@+id/buttonMainYoga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Main Menu" />
+    </LinearLayout>
+
+</LinearLayout>

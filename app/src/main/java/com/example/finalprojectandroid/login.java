@@ -10,7 +10,7 @@ import android.content.Intent;
 
 public class login extends AppCompatActivity {
 
-    TextView txtNewUser;
+    TextView txtNewUser,txtForgotPassword;
     Button loginBtn;
 
     @Override
@@ -19,6 +19,7 @@ public class login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         txtNewUser = findViewById(R.id.txtNewUserLink);
+        txtForgotPassword = findViewById(R.id.forgotPassword);
         loginBtn = findViewById(R.id.login);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +35,14 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(login.this,NewUser.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(login.this,forgotPassword.class);
                 startActivity(intent);
                 finish();
             }

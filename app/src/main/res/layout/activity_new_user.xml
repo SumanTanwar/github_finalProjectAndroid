@@ -41,7 +41,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginLeft="10dp"/>
         <EditText
-
+            android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -91,14 +91,14 @@
                 android:id="@+id/rdfm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:text="Female" />
 
             <RadioButton
                 android:id="@+id/rdfm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:text="Others" />
 
         </RadioGroup>
@@ -204,28 +204,18 @@
 
 
     </LinearLayout>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
 
 <CheckBox
     android:id="@+id/checkPolicy"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="I accept the terms and conditions !  "
-        android:textColor="@color/black"
-        android:textSize="15dp" />
+    android:layout_marginTop="10dp"
+    android:text="I accept the terms and conditions ! "/>
 
-</LinearLayout>
+
 
     <Button
-        android:id="@+id/newUserSubmit"
+        android:id="@+id/newUserSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -242,10 +232,11 @@
             android:text="Got an account? "
             android:textColor="@color/black"
             android:textSize="15dp" />
+
         <TextView
-            android:id="@+id/txtNewUserLink"
+            android:id="@+id/txtNewUserSignIn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Sign in"
             android:textColor="@color/purple_700"
             android:textSize="15dp" />
