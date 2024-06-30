@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,18 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectAndroid"
         tools:targetApi="31">
-        <activity
-            android:name=".resetPassword"
-            android:exported="false" />
+
         <activity
             android:name=".forgotPassword"
             android:exported="false" />
-        <activity
-            android:name=".fordotPassword"
-            android:exported="false" />
-        <activity
-            android:name=".forgot"
-            android:exported="false" />
+
         <activity
             android:name=".Report"
             android:exported="false" />
@@ -49,7 +44,8 @@
             android:exported="false" />
         <activity
             android:name=".NewUser"
-            android:exported="false" />
+            android:exported="false" >
+        </activity>
         <activity
             android:name=".welcome"
             android:exported="true">
@@ -58,6 +54,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".login"

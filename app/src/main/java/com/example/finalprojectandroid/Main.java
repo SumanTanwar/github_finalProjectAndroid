@@ -8,16 +8,38 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class Main extends AppCompatActivity {
+
 
     Button btnRunning,btnSkipping, btnSwimming,
             btnCycling,btnExcercise,btnyoga,btnWeeklyReport;
-    TextView txtSignOut;
+    FirebaseAuth auth;
+    TextView textView,txtSignOut;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        auth = FirebaseAuth.getInstance();
+        txtSignOut =findViewById(R.id.signout);
+        textView = findViewById(R.id.user_details);
+        user = auth.getCurrentUser();
+        if(user == null)
+        {
+            Intent intent = new Intent(getApplicationContext(), login.class);
+            startActivity(intent);
+            finish();
+        }
+        else
+        {
+            textView.setText(user.getEmail());
+        }
 
         btnRunning =findViewById(R.id.running);
         btnSkipping =findViewById(R.id.skipping);
@@ -26,7 +48,7 @@ public class Main extends AppCompatActivity {
         btnExcercise =findViewById(R.id.excercise);
         btnyoga =findViewById(R.id.yoga);
         btnWeeklyReport =findViewById(R.id.weeklyreport);
-        txtSignOut =findViewById(R.id.signout);
+
 
 
         btnRunning.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +111,9 @@ public class Main extends AppCompatActivity {
         txtSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Main.this,login.class);
+                FirebaseAuth.getInstance().signOut();
+
+                Intent intent = new Intent(getApplicationContext(), login.class);
                 startActivity(intent);
                 finish();
             }

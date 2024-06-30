@@ -146,6 +146,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"/>
         <EditText
+            android:id="@+id/emailCreateUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="47dp"
@@ -168,6 +169,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"/>
         <EditText
+            android:id="@+id/passCreateUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -194,6 +196,7 @@
             android:textSize="20dp"
             android:layout_marginLeft="10dp"/>
         <EditText
+            android:id="@+id/confirmPassCreateUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -209,16 +212,25 @@
     android:id="@+id/checkPolicy"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="5dp"
     android:text="I accept the terms and conditions ! "/>
 
-
-
+<ProgressBar
+    android:id="@+id/progressBar"
+    android:visibility="gone"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/newUserRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="Register"/>
     <Button
         android:id="@+id/newUserSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:text="Sign Up"/>
 
     <LinearLayout
@@ -247,49 +259,52 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginTop="25dp">
-
-    <TextView
-        android:id="@+id/txtNewUserLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-
-        android:text="By registering,
- I acknowledge that I have read and accept the"
-        android:textColor="@color/black"
-        android:textSize="13dp"
-        android:textStyle="bold"/>
-
-
-
 </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal">-->
 
-        <TextView
-            android:id="@+id/txtNewUserLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="1dp"
-            android:text="general Terms and
- conditions of Use and the"
-            android:textColor="@color/black"
-            android:textSize="13dp"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/privacyPolicy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textStyle="bold"
-            android:textColor="@color/purple_700"
-            android:text="privacy policy"/>
 
-    </LinearLayout>
+<!--            <TextView-->
+<!--                android:id="@+id/txtNewUserLink"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginRight="10dp"-->
+
+<!--                android:text="By registering,-->
+<!-- I acknowledge that I have read and accept"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="13dp"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--        </LinearLayout>-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtNewUserLink"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:layout_marginLeft="1dp"-->
+<!--            android:text="general Terms and-->
+<!-- conditions of Use and the"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="13dp"-->
+<!--            android:textStyle="bold"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/privacyPolicy"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="14dp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/purple_700"-->
+<!--            android:text="privacy policy"/>-->
+
+<!--    </LinearLayout>-->
 
 
 </LinearLayout>
