@@ -12,7 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import com.google.firebase.Firebase;
+
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,22 +32,11 @@ public class NewUser extends AppCompatActivity {
     ProgressBar progressBar;
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(),Main.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_user);
+
+        FirebaseApp.initializeApp(this);
 
         mAuth = FirebaseAuth.getInstance();
         emailEdit = findViewById(R.id.emailCreateUser);
