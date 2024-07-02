@@ -104,32 +104,32 @@
         </RadioGroup>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="left"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="10dp">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date of Birth"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginLeft="10dp"/>
-        <EditText
-            android:id="@+id/DateOfBirth"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:hint="MM/DD/YYYY"
-            android:focusable="false"
-            android:layout_marginLeft="10dp"
-            android:clickable="true"
-            android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-            android:inputType="date"/>
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Date of Birth"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="20dp"-->
+<!--            android:layout_marginTop="1dp"-->
+<!--            android:layout_marginLeft="10dp"/>-->
+<!--        <EditText-->
+<!--            android:id="@+id/DateOfBirth"-->
+<!--            android:layout_width="180dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="MM/DD/YYYY"-->
+<!--            android:focusable="false"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:clickable="true"-->
+<!--            android:drawableEnd="@android:drawable/ic_menu_my_calendar"-->
+<!--            android:inputType="date"/>-->
+<!--    </LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -215,11 +215,11 @@
     android:layout_marginTop="5dp"
     android:text="I accept the terms and conditions ! "/>
 
-<ProgressBar
-    android:id="@+id/progressBar"
-    android:visibility="gone"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
+<!--<ProgressBar-->
+<!--    android:id="@+id/progressBar"-->
+<!--    android:visibility="gone"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"/>-->
     <Button
         android:id="@+id/newUserRegister"
         android:layout_width="wrap_content"

@@ -28,26 +28,26 @@ public class login extends AppCompatActivity {
     TextView txtNewUser,txtForgotPassword;
     Button loginBtn,logRegbtn;
     FirebaseAuth mAuth;
-    ProgressBar progressBar;
+   // ProgressBar progressBar;
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(),Main.class);
-            startActivity(intent);
-            finish();
-        }
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser != null){
+//            Intent intent = new Intent(getApplicationContext(),Main.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        FirebaseApp.initializeApp(this);
+
 
         emailEdit = findViewById(R.id.EditLogin);
         passEdit = findViewById(R.id.EditPass);
@@ -55,12 +55,12 @@ public class login extends AppCompatActivity {
         txtNewUser = findViewById(R.id.txtNewUserLink);
         txtForgotPassword = findViewById(R.id.forgotPassword);
         loginBtn = findViewById(R.id.login);
-
+        mAuth = FirebaseAuth.getInstance();
 
         logRegbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
+               // progressBar.setVisibility(View.VISIBLE);
                 String email,password;
                 email = String.valueOf(emailEdit.getText());
                 password = String.valueOf(passEdit.getText());
@@ -75,30 +75,24 @@ public class login extends AppCompatActivity {
                     Toast.makeText(login.this,"Enter password",Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                progressBar.setVisibility(View.GONE);
-
                                 if (task.isSuccessful()) {
-
-                                    Toast.makeText(getApplicationContext(),"Login Successful",
+                                    Toast.makeText(login.this, "Login Successful",
                                             Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(),Main.class);
+                                    Intent intent = new Intent(login.this, Main.class);
                                     startActivity(intent);
                                     finish();
-
                                 } else {
-
-                                    Toast.makeText(login.this, "Authentication failed.",
+                                    Toast.makeText(login.this, "Authentication failed: " + task.getException().getMessage(),
                                             Toast.LENGTH_SHORT).show();
-
                                 }
                             }
                         });
+
+
 
 
             }

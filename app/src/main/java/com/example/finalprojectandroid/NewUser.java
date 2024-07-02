@@ -29,7 +29,7 @@ public class NewUser extends AppCompatActivity {
     Button submitButton,registerButton;
     TextView txtSignIn;
     FirebaseAuth mAuth;
-    ProgressBar progressBar;
+//    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +45,13 @@ public class NewUser extends AppCompatActivity {
         registerButton = findViewById(R.id.newUserRegister);
         submitButton = findViewById(R.id.newUserSignUp);
         txtSignIn = findViewById(R.id.txtNewUserSignIn);
-        progressBar =findViewById(R.id.progressBar);
+//        progressBar =findViewById(R.id.progressBar);
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.VISIBLE);
                 String email,password;
                 email = String.valueOf(emailEdit.getText());
                 password = String.valueOf(passEdit.getText());
@@ -71,7 +71,7 @@ public class NewUser extends AppCompatActivity {
                         .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressBar.setVisibility(View.GONE);
+//                                progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful())
                                 {
 
