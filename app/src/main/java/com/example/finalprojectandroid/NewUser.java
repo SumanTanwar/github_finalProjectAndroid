@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -25,10 +26,11 @@ import com.google.android.gms.tasks.Task;
 
 public class NewUser extends AppCompatActivity {
 
-    EditText emailEdit,passEdit,confirmPassEdit;
-    Button submitButton,registerButton;
+    EditText nameEdit,emailEdit,passEdit,confirmPassEdit;
+    Button signUpButton,registerButton;
     TextView txtSignIn;
     FirebaseAuth mAuth;
+    RadioGroup radioGroup;
 //    ProgressBar progressBar;
 
     @Override
@@ -39,12 +41,14 @@ public class NewUser extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
         mAuth = FirebaseAuth.getInstance();
+        nameEdit = findViewById(R.id.name);
         emailEdit = findViewById(R.id.emailCreateUser);
         passEdit = findViewById(R.id.passCreateUser);
         confirmPassEdit = findViewById(R.id.confirmPassCreateUser);
         registerButton = findViewById(R.id.newUserRegister);
-        submitButton = findViewById(R.id.newUserSignUp);
+        signUpButton = findViewById(R.id.newUserSignUp);
         txtSignIn = findViewById(R.id.txtNewUserSignIn);
+        radioGroup = findViewById(R.id.rdgrp);
 //        progressBar =findViewById(R.id.progressBar);
 
 
@@ -52,9 +56,24 @@ public class NewUser extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                progressBar.setVisibility(View.VISIBLE);
-                String email,password;
+                String name,email,password,confirmPass;
+                name = String.valueOf(nameEdit.getText());
                 email = String.valueOf(emailEdit.getText());
                 password = String.valueOf(passEdit.getText());
+                confirmPass = String.valueOf(confirmPassEdit.getText());
+
+
+                if(TextUtils.isEmpty(name))
+                {
+                    Toast.makeText(NewUser.this,"Enter name",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+
+                if (selectedId == -1) {
+                    Toast.makeText(NewUser.this, "Please select a gender", Toast.LENGTH_SHORT).show();
+                }
 
                 if(TextUtils.isEmpty(email))
                 {
@@ -66,6 +85,22 @@ public class NewUser extends AppCompatActivity {
                     Toast.makeText(NewUser.this,"Enter password",Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(TextUtils.isEmpty(confirmPass))
+                {
+                    Toast.makeText(NewUser.this,"Confirm password",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!password.equals(confirmPass)) {
+                    Toast.makeText(NewUser.this,"Passwords do not match",Toast.LENGTH_SHORT).show();
+
+                    confirmPassEdit.requestFocus();
+                    return;
+                }
+
+
+
+
+
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
@@ -83,6 +118,10 @@ public class NewUser extends AppCompatActivity {
                                     Toast.makeText(NewUser.this, "Authentication failed",
                                             Toast.LENGTH_SHORT).show();
                                 }
+
+                                Intent intent = new Intent(NewUser.this,login.class);
+                                startActivity(intent);
+                                finish();
                             }
                         });
 
@@ -92,16 +131,6 @@ public class NewUser extends AppCompatActivity {
 
 
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(NewUser.this,login.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
         txtSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,6 +139,7 @@ public class NewUser extends AppCompatActivity {
                 finish();
             }
         });
+
 
 
 

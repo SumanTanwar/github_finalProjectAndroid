@@ -26,8 +26,10 @@ public class login extends AppCompatActivity {
 
     EditText emailEdit,passEdit;
     TextView txtNewUser,txtForgotPassword;
-    Button loginBtn,logRegbtn;
+    Button logRegbtn;
     FirebaseAuth mAuth;
+
+
    // ProgressBar progressBar;
 
 //    @Override
@@ -54,7 +56,6 @@ public class login extends AppCompatActivity {
         logRegbtn = findViewById(R.id.loginRegister);
         txtNewUser = findViewById(R.id.txtNewUserLink);
         txtForgotPassword = findViewById(R.id.forgotPassword);
-        loginBtn = findViewById(R.id.login);
         mAuth = FirebaseAuth.getInstance();
 
         logRegbtn.setOnClickListener(new View.OnClickListener() {
@@ -98,17 +99,6 @@ public class login extends AppCompatActivity {
             }
         });
 
-
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(login.this,Main.class);
-                startActivity(intent);
-                finish();
-
-            }
-        });
         txtNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
