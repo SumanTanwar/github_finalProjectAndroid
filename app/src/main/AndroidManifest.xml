@@ -14,6 +14,9 @@
         android:theme="@style/Theme.FinalProjectAndroid"
         tools:targetApi="31">
         <activity
+            android:name=".MyProfile"
+            android:exported="false" />
+        <activity
             android:name=".conditions"
             android:exported="false" />
         <activity

@@ -20,9 +20,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Main extends AppCompatActivity {
 
-    Button btnRunning, btnSkipping, btnSwimming, btnCycling, btnExcercise, btnYoga, btnWeeklyReport;
+    Button btnRunning, btnSkipping, btnSwimming,
+            btnCycling, btnExcercise, btnYoga,
+            btnWeeklyReport;
     FirebaseAuth auth;
-    TextView textView, txtSignOut;
+    TextView textView, txtSignOut, txtMyProfile;
     FirebaseUser user;
     private DatabaseReference mDatabase;
 
@@ -37,6 +39,7 @@ public class Main extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         txtSignOut = findViewById(R.id.signout);
         textView = findViewById(R.id.user_details);
+        txtMyProfile = findViewById(R.id.my_profile); // Make sure this matches your layout file
         user = auth.getCurrentUser();
 
         if (user == null) {
@@ -50,89 +53,43 @@ public class Main extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         String name = dataSnapshot.child("name").getValue(String.class);
-                        textView.setText("Welcome  " + name);
+                        String email = dataSnapshot.child("email").getValue(String.class);
+                        String username = dataSnapshot.child("username").getValue(String.class);
+                        String password = dataSnapshot.child("password").getValue(String.class);
+
+                        textView.setText("Welcome " + name);
+
+                        txtMyProfile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Main.this, MyProfile.class);
+                                intent.putExtra("name", name);
+                                intent.putExtra("email", email);
+                                intent.putExtra("username", username);
+                                intent.putExtra("password", password);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
                     } else {
                         textView.setText("User");
                     }
                 }
 
                 @Override
-                public void onCancelled( DatabaseError databaseError) {
+                public void onCancelled(DatabaseError databaseError) {
                     Toast.makeText(Main.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
-        btnRunning = findViewById(R.id.running);
-        btnSkipping = findViewById(R.id.skipping);
-        btnSwimming = findViewById(R.id.swimming);
-        btnCycling = findViewById(R.id.cycling);
-        btnExcercise = findViewById(R.id.excercise);
-        btnYoga = findViewById(R.id.yoga);
-        btnWeeklyReport = findViewById(R.id.weeklyreport);
+        // Other button click listeners
+        // ...
 
-        btnRunning.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Main.this, RunningActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        btnSkipping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Main.this, Skipping.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        btnSwimming.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Main.this, Swimming.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        btnCycling.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Main.this, Cycling.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        btnExcercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Main.this, Exercise.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        btnYoga.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Main.this, Yoga.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        btnWeeklyReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Main.this, Report.class);
-                startActivity(intent);
-                finish();
-            }
-        });
         txtSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-
                 Intent intent = new Intent(getApplicationContext(), login.class);
                 startActivity(intent);
                 finish();
@@ -142,6 +99,6 @@ public class Main extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        // Handle back press if needed
     }
 }

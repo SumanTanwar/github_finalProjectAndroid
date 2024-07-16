@@ -73,7 +73,7 @@
             android:layout_margin="15dp"
             android:inputType="textPassword"
             android:hint="Enter Password"
-            />
+            android:drawableEnd="@drawable/ic_eye_closed"/>
     </LinearLayout>
 
     <TextView

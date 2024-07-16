@@ -14,6 +14,11 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import android.graphics.drawable.Drawable;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.view.MotionEvent;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +31,7 @@ public class login extends AppCompatActivity {
     TextView txtNewUser, txtForgotPassword;
     Button logRegbtn;
     FirebaseAuth mAuth;
+    boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,16 @@ public class login extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        passEdit.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (passEdit.getRight() - passEdit.getCompoundDrawables()[2].getBounds().width())) {
+                    togglePasswordVisibility(passEdit);
+                    return true;
+                }
+            }
+            return false;
+        });
+
         if (currentUser != null) {
             // User is signed in, navigate to the main activity
             Intent intent = new Intent(login.this, Main.class);
@@ -48,11 +64,9 @@ public class login extends AppCompatActivity {
             return;
         }
 
-
         logRegbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String email = String.valueOf(emailEdit.getText());
                 String password = String.valueOf(passEdit.getText());
 
@@ -65,8 +79,7 @@ public class login extends AppCompatActivity {
                     return;
                 }
                 mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>()
-                        {
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
@@ -102,10 +115,19 @@ public class login extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-
+    private void togglePasswordVisibility(EditText editText) {
+        if (editText.getTransformationMethod() instanceof PasswordTransformationMethod) {
+            editText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_open, 0);
+        } else {
+            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_closed, 0);
+        }
+        editText.setSelection(editText.getText().length());
     }
 
-
+    @Override
+    public void onBackPressed() {
+        // Disable back button
+    }
 }

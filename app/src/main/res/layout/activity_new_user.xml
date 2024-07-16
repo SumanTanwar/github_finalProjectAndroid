@@ -8,7 +8,6 @@
     android:layout_margin="10dp"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-
     android:orientation="vertical">
 
     <ImageView
@@ -40,6 +39,7 @@
             android:textSize="20dp"
             android:layout_marginTop="1dp"
             android:layout_marginLeft="10dp"/>
+
         <EditText
             android:id="@+id/name"
             android:text=""
@@ -48,6 +48,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:hint="Enter your name"/>
+
     </LinearLayout>
 
 
@@ -123,6 +124,7 @@
 <!--            android:drawableEnd="@android:drawable/ic_menu_my_calendar"-->
 <!--            android:inputType="date"/>-->
 <!--    </LinearLayout>-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -138,6 +140,7 @@
             android:textSize="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"/>
+
         <EditText
             android:id="@+id/emailCreateUser"
             android:layout_width="match_parent"
@@ -146,6 +149,7 @@
             android:layout_marginRight="10dp"
             android:hint="Enter Email Address"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -161,6 +165,7 @@
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"/>
+
         <EditText
             android:id="@+id/passCreateUser"
             android:layout_width="match_parent"
@@ -171,11 +176,8 @@
             android:hint="Enter Password"
             android:drawableEnd="@drawable/ic_eye_closed"
             />
-
-
-
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -190,6 +192,7 @@
             android:textColor="@color/black"
             android:textSize="20dp"
             android:layout_marginLeft="10dp"/>
+
         <EditText
             android:id="@+id/confirmPassCreateUser"
             android:layout_width="match_parent"
@@ -200,8 +203,6 @@
             android:hint="Confirm Password"
             android:drawableEnd="@drawable/ic_eye_closed"
             />
-
-
     </LinearLayout>
 
 <CheckBox
@@ -237,10 +238,10 @@
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/txtNewUserSignIn"
+            android:id="@+id/txtNewUserLogin"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Sign in"
+            android:text="Login"
             android:textColor="@color/purple_700"
             android:textSize="15dp" />
 
@@ -249,39 +250,37 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="50dp">
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="left">
 
 
             <TextView
-                android:id="@+id/txtNewUserLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-
                 android:text="By registering,
- I acknowledge that I have read and accept"
+ I acknowledge that I have read and accept all"
                 android:textColor="@color/black"
-                android:textSize="13dp"
-                android:textStyle="bold"/>
+                android:textSize="13dp"/>
+
 
         </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="left">
         <TextView
-            android:id="@+id/txtNewUserLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:layout_marginLeft="1dp"
-            android:text="general Terms and
- conditions of Use and the"
+            android:text="of written general"
             android:textColor="@color/black"
             android:textSize="13dp"
-            android:textStyle="bold"/>
+           />
         <TextView
             android:id="@+id/privacyPolicy"
             android:layout_width="wrap_content"
@@ -289,9 +288,13 @@
             android:textSize="14dp"
             android:textStyle="bold"
             android:textColor="@color/purple_700"
-            android:text="privacy policy"/>
+            android:text="terms and conditions"
+            android:layout_marginLeft="-2dp"/>
+
+
 
     </LinearLayout>
+
 
 
 </LinearLayout>

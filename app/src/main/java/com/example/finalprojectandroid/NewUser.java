@@ -13,10 +13,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+
 import android.graphics.drawable.Drawable;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
+
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
@@ -30,7 +32,7 @@ public class NewUser extends AppCompatActivity {
 
     EditText nameEdit, emailEdit, passEdit, confirmPassEdit;
     Button registerButton;
-    TextView txtSignIn,txtPolicy;
+    TextView txtLogin,txtPolicy;
     FirebaseAuth mAuth;
     RadioGroup radioGroup;
     CheckBox checkboxPolicy;
@@ -55,11 +57,12 @@ public class NewUser extends AppCompatActivity {
         confirmPassEdit = findViewById(R.id.confirmPassCreateUser);
         checkboxPolicy = findViewById(R.id.checkPolicy);
         registerButton = findViewById(R.id.newUserRegister);
-        txtSignIn = findViewById(R.id.txtNewUserSignIn);
+        txtLogin = findViewById(R.id.txtNewUserLogin);
         txtPolicy = findViewById(R.id.privacyPolicy);
 
 
         // Set on click listener for the eye icon
+
         passEdit.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (event.getRawX() >= (passEdit.getRight() - passEdit.getCompoundDrawables()[2].getBounds().width())) {
@@ -131,7 +134,7 @@ public class NewUser extends AppCompatActivity {
                                         writeNewUser(user.getUid(), name, email);
                                     }
                                     Toast.makeText(NewUser.this, "Account Created", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(NewUser.this, NewUser.class);
+                                    Intent intent = new Intent(NewUser.this, login.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
@@ -143,7 +146,7 @@ public class NewUser extends AppCompatActivity {
             }
         });
 
-        txtSignIn.setOnClickListener(new View.OnClickListener() {
+        txtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NewUser.this, login.class);

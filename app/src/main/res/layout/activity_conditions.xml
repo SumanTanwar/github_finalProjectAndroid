@@ -16,6 +16,7 @@
         android:text="Terms and Conditions"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:layout_marginTop="30dp"
         android:textSize="20dp"/>
 
         <TextView
@@ -39,20 +40,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[Suman Tanwar owns the intellectual property rights for all material on [Your App Name]. You may use the app for personal purposes only."
+            android:text="Suman Tanwar owns the intellectual property rights for all material on Fitness Builder App. You may use the app for personal purposes only."
             android:layout_marginBottom="10dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" User Responsibilities"
+            android:text="User Responsibilities"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_marginBottom="5dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Users must be at least 14 years old.\n- Do not use the app for illegal or unauthorized purposes.\n- Maintain the confidentiality of your login credentials."
+            android:text="Users must be at least 14 years old.\n- Don't use app for illegal or unauthorized purposes.\n- Maintain the confidentiality of your login credentials."
             android:layout_marginBottom="10dp"/>
         <TextView
             android:layout_width="wrap_content"
@@ -120,13 +121,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="For questions, contact us at:"
+        android:text="For questions, contact us at: \n - Email: stanwar2030@gmail.com"
         android:layout_marginBottom="5dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- Email: stanwar2030@gmail.com"
-        android:layout_marginBottom="16dp"/>
+
 
 
 
@@ -134,7 +131,7 @@
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="5dp"
         android:text="Back"/>
 
 </LinearLayout>
