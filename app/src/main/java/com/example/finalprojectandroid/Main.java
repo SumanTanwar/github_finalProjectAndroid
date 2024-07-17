@@ -12,21 +12,21 @@ import android.widget.Toast;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 public class Main extends AppCompatActivity {
 
     Button btnRunning, btnSkipping, btnSwimming,
-            btnCycling, btnExcercise, btnYoga,
+            btnCycling, btnExercise, btnYoga,
             btnWeeklyReport;
     FirebaseAuth auth;
     TextView textView, txtSignOut, txtMyProfile;
     FirebaseUser user;
-    private DatabaseReference mDatabase;
+    DatabaseReference mDatabase; // Declare DatabaseReference at class level
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +36,12 @@ public class Main extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
         auth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference(); // Initialize mDatabase here
         user = auth.getCurrentUser();
 
         txtMyProfile = findViewById(R.id.my_profile);
         textView = findViewById(R.id.user_details);
-       
+        btnWeeklyReport = findViewById(R.id.weeklyreport);
         txtSignOut = findViewById(R.id.signout);
 
         if (user == null) {
@@ -85,9 +85,16 @@ public class Main extends AppCompatActivity {
             });
         }
 
-        // Other button click listeners
-        // ...
+        // Set onClick listener for btnWeeklyReport
+        btnWeeklyReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Main.this, Report_Main.class);
+                startActivity(intent);
+            }
+        });
 
+        // Set onClick listener for txtSignOut
         txtSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
