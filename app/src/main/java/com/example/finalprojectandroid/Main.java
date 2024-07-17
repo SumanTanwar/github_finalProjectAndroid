@@ -37,10 +37,12 @@ public class Main extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        txtSignOut = findViewById(R.id.signout);
-        textView = findViewById(R.id.user_details);
-        txtMyProfile = findViewById(R.id.my_profile); // Make sure this matches your layout file
         user = auth.getCurrentUser();
+
+        txtMyProfile = findViewById(R.id.my_profile);
+        textView = findViewById(R.id.user_details);
+       
+        txtSignOut = findViewById(R.id.signout);
 
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), login.class);

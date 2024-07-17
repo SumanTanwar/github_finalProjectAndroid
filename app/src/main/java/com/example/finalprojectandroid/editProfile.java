@@ -67,6 +67,7 @@ public class editProfile extends AppCompatActivity {
                     AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail(), currentPassword);
 
                     // Reauthenticate user with current credentials
+                    // while pressing save button
                     currentUser.reauthenticate(credential)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

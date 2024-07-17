@@ -44,7 +44,7 @@ public class login extends AppCompatActivity {
         txtNewUser = findViewById(R.id.txtNewUserLink);
         txtForgotPassword = findViewById(R.id.forgotPassword);
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+      //  FirebaseUser currentUser = mAuth.getCurrentUser();
 
         passEdit.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -56,13 +56,7 @@ public class login extends AppCompatActivity {
             return false;
         });
 
-        if (currentUser != null) {
-            // User is signed in, navigate to the main activity
-            Intent intent = new Intent(login.this, Main.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
+
 
         logRegbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,4 +124,5 @@ public class login extends AppCompatActivity {
     public void onBackPressed() {
         // Disable back button
     }
+
 }
