@@ -3,6 +3,7 @@ package com.example.finalprojectandroid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -54,39 +55,46 @@ public class MyProfile extends AppCompatActivity {
         });
 
         deleteprofile.setOnClickListener(view -> {
-            String mainusername = profilename.getText().toString().trim();
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+            new AlertDialog.Builder(MyProfile.this)
+                    .setTitle("Delete Profile")
+                    .setMessage("Are you sure you want to delete your profile?")
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        String mainusername = profilename.getText().toString().trim();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
 
-            Query checkuserData = reference.orderByChild("name").equalTo(mainusername);
-            checkuserData.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                            // Remove user from Realtime Database
-                            userSnapshot.getRef().removeValue();
-                        }
+                        Query checkuserData = reference.orderByChild("name").equalTo(mainusername);
+                        checkuserData.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                                        // Remove user from Realtime Database
+                                        userSnapshot.getRef().removeValue();
+                                    }
 
-                        // Remove user from Firebase Authentication
-                        FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Intent intent = new Intent(MyProfile.this, login.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                Toast.makeText(MyProfile.this, "Failed to delete user from authentication", Toast.LENGTH_SHORT).show();
+                                    // Remove user from Firebase Authentication
+                                    FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Intent intent = new Intent(MyProfile.this, login.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            Toast.makeText(MyProfile.this, "Failed to delete user from authentication", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(MyProfile.this, "User not found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(MyProfile.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
-                    } else {
-                        Toast.makeText(MyProfile.this, "User not found", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(MyProfile.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
         });
 
 
@@ -104,10 +112,10 @@ public class MyProfile extends AppCompatActivity {
         if (requestCode == EDIT_PROFILE_REQUEST && resultCode == RESULT_OK) {
             // Update UI with new data
             String newName = data.getStringExtra("name");
-            String newEmail = data.getStringExtra("email");
+            //String newEmail = data.getStringExtra("email");
 
             profilename.setText(newName);
-            profileemail.setText(newEmail);
+           // profileemail.setText(newEmail);
         }
     }
 

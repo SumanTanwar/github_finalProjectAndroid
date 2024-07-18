@@ -14,7 +14,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -23,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class editProfile extends AppCompatActivity {
 
-    EditText nameEdit, emailEdit, passwordEdit, oldPassword;
+    EditText nameEdit, passwordEdit, oldPassword;
     Button saveButton, btnMainMenu;
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
@@ -34,7 +33,6 @@ public class editProfile extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         nameEdit = findViewById(R.id.editname);
-        emailEdit = findViewById(R.id.editemail);
         passwordEdit = findViewById(R.id.editpassword);
         oldPassword = findViewById(R.id.oldpassword);
         saveButton = findViewById(R.id.save);
@@ -45,10 +43,8 @@ public class editProfile extends AppCompatActivity {
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
-        String email = intent.getStringExtra("email");
 
         nameEdit.setText(name); // Set current name in EditText
-        emailEdit.setText(email); // Set current email in EditText
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +63,6 @@ public class editProfile extends AppCompatActivity {
                     AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail(), currentPassword);
 
                     // Reauthenticate user with current credentials
-                    // while pressing save button
                     currentUser.reauthenticate(credential)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -99,7 +94,6 @@ public class editProfile extends AppCompatActivity {
 
     private void updateProfile(FirebaseUser user, String newPassword) {
         String newName = nameEdit.getText().toString().trim();
-        String newEmail = emailEdit.getText().toString().trim();
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(newName)
@@ -111,20 +105,6 @@ public class editProfile extends AppCompatActivity {
                     public void onComplete(Task<Void> task) {
                         if (task.isSuccessful()) {
                             mDatabase.child("users").child(user.getUid()).child("name").setValue(newName);
-                            if (!TextUtils.isEmpty(newEmail)) {
-                                user.updateEmail(newEmail)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(Task<Void> emailTask) {
-                                                if (emailTask.isSuccessful()) {
-                                                    mDatabase.child("users").child(user.getUid()).child("email").setValue(newEmail);
-                                                    Toast.makeText(editProfile.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    Toast.makeText(editProfile.this, "Failed to update email: " + emailTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-                            }
 
                             if (!TextUtils.isEmpty(newPassword)) {
                                 user.updatePassword(newPassword)
@@ -143,7 +123,6 @@ public class editProfile extends AppCompatActivity {
                             // Return to MyProfile with updated data
                             Intent intent = new Intent();
                             intent.putExtra("name", newName); // Pass updated name back
-                            intent.putExtra("email", newEmail); // Pass updated email back
                             setResult(RESULT_OK, intent);
                             finish();
                         } else {
