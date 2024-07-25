@@ -134,7 +134,7 @@ public class NewUser extends AppCompatActivity {
                                         writeNewUser(user.getUid(), name, email);
                                     }
                                     Toast.makeText(NewUser.this, "Account Created", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(NewUser.this, login.class);
+                                    Intent intent = new Intent(NewUser.this, Main.class);
                                     startActivity(intent);
                                     finish();
                                 } else {

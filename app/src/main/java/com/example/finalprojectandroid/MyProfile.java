@@ -68,11 +68,11 @@ public class MyProfile extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
                                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                                        // Remove user from Realtime Database
+                                        // Remove user from Realtime DB
                                         userSnapshot.getRef().removeValue();
                                     }
 
-                                    // Remove user from Firebase Authentication
+                                    // Remove user from FB Auth
                                     FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
                                             Intent intent = new Intent(MyProfile.this, login.class);
@@ -100,8 +100,8 @@ public class MyProfile extends AppCompatActivity {
 
         editprofile.setOnClickListener(view -> {
             Intent intent = new Intent(MyProfile.this, editProfile.class);
-            intent.putExtra("name", profilename.getText().toString().trim()); // Pass current name
-            intent.putExtra("email", profileemail.getText().toString().trim()); // Pass current email
+            intent.putExtra("name", profilename.getText().toString().trim());
+            intent.putExtra("email", profileemail.getText().toString().trim());
             startActivityForResult(intent, EDIT_PROFILE_REQUEST);
         });
     }
@@ -110,6 +110,7 @@ public class MyProfile extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_PROFILE_REQUEST && resultCode == RESULT_OK) {
+
             // Update UI with new data
             String newName = data.getStringExtra("name");
             //String newEmail = data.getStringExtra("email");
@@ -128,6 +129,5 @@ public class MyProfile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Handle back press if needed
     }
 }
