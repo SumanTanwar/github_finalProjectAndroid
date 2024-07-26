@@ -7,15 +7,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
-
 
 public class RunningActivity extends AppCompatActivity {
 
-
-    Button btnMainRun;
+    Button btnMainRun, btnCalulate;
     private TextView tvTimer;
     private Button btnStart, btnPause, btnReset;
+    EditText caloriedBurned;
 
     private Handler handler = new Handler();
     private long startTime = 0L;
@@ -41,7 +41,9 @@ public class RunningActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running);
 
-        btnMainRun =findViewById(R.id.btnMainRun);
+        btnMainRun = findViewById(R.id.btnMainRun);
+        caloriedBurned = findViewById(R.id.caloriesBurned);
+        btnCalulate = findViewById(R.id.btnCalculateRun);
 
         tvTimer = findViewById(R.id.tvTimer);
         btnStart = findViewById(R.id.btnStart);
@@ -90,10 +92,31 @@ public class RunningActivity extends AppCompatActivity {
         btnMainRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RunningActivity.this,Main.class);
+                Intent intent = new Intent(RunningActivity.this, Main.class);
                 startActivity(intent);
                 finish();
             }
         });
+
+        btnCalulate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculateAndDisplayCalories();
+            }
+        });
+    }
+
+    private void calculateAndDisplayCalories() {
+        double MET = 8.0; // MET value for running (moderate pace)
+        double weight = 70.0; // User weight in kg (you might want to get this from user input)
+
+        // Calculate time in hours
+        double timeInHours = updateTime / 3600000.0;
+
+        // Calculate calories burned
+        double caloriesBurned = MET * weight * timeInHours;
+
+        // Display the result in the EditText
+        caloriedBurned.setText(String.format("%.2f", caloriesBurned));
     }
 }

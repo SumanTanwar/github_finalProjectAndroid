@@ -46,7 +46,7 @@ public class NewUser extends AppCompatActivity {
         passEdit = findViewById(R.id.passCreateUser);
         confirmPassEdit = findViewById(R.id.confirmPassCreateUser);
         registerButton = findViewById(R.id.newUserRegister);
-        signUpButton = findViewById(R.id.newUserSignUp);
+     //   signUpButton = findViewById(R.id.newUserSignUp);
         txtSignIn = findViewById(R.id.txtNewUserSignIn);
         radioGroup = findViewById(R.id.rdgrp);
 //        progressBar =findViewById(R.id.progressBar);
