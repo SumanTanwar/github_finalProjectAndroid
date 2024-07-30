@@ -1,7 +1,6 @@
 package com.example.finalprojectandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,19 +12,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Skipping extends AppCompatActivity {
-
+public class cycling extends AppCompatActivity {
 
     TextView tvTimer;
-    Button btnMainSkip, btnStart, btnPause, btnReset,
-            btnSave,btnCalculate;
-    EditText caloriesBurned;
+    Button btnStart, btnPause, btnReset, btnCalculate, btnSave, btnMainCycle;
+    EditText caloriesCycling;
 
-    Handler handler = new Handler();
-    long startTime = 0L;
-    long timeInMillis = 0L;
-    long timeSwapBuff = 0L;
-    long updateTime = 0L;
+    private Handler handler = new Handler();
+    private long startTime = 0L;
+    private long timeInMillis = 0L;
+    private long timeSwapBuff = 0L;
+    private long updateTime = 0L;
 
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
@@ -43,17 +40,16 @@ public class Skipping extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_skipping);
+        setContentView(R.layout.activity_cycling);
 
-        btnMainSkip =findViewById(R.id.btnMainSkip);
-
-        tvTimer = findViewById(R.id.timerSkip);
-        btnStart = findViewById(R.id.btnStartSkip);
-        btnPause = findViewById(R.id.btnPauseSkip);
-        btnReset = findViewById(R.id.btnResetSkip);
+        btnMainCycle = findViewById(R.id.btnMainCycle);
+        tvTimer = findViewById(R.id.timerCycle);
+        btnStart = findViewById(R.id.btnStartCycle);
+        btnPause = findViewById(R.id.btnPauseCycle);
+        btnReset = findViewById(R.id.btnResetCycle);
+        btnCalculate = findViewById(R.id.btnCalculateCycle);
         btnSave = findViewById(R.id.btnSaveCalories);
-        btnCalculate = findViewById(R.id.btnCalculateSkip);
-        caloriesBurned = findViewById(R.id.caloriesBurned);
+        caloriesCycling = findViewById(R.id.caloriesCycle);
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,28 +87,36 @@ public class Skipping extends AppCompatActivity {
             }
         });
 
+        btnMainCycle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(cycling.this, Main.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String caloryBurntString = caloriesBurned.getText().toString();
+                String caloryBurntString = caloriesCycling.getText().toString();
                 double caloryBurnt = 0.0;
 
                 try {
                     caloryBurnt = Double.parseDouble(caloryBurntString);
                 } catch (NumberFormatException e) {
-
-                    Toast.makeText(Skipping.this, "Invalid or No value...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(cycling.this, "Invalid or No value...", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (caloryBurnt != 0) {
-                    new AlertDialog.Builder(Skipping.this)
+                    new AlertDialog.Builder(cycling.this)
                             .setTitle("Calories Saved")
                             .setMessage("Your number of burnt calories are saved in the database for the weekly report.")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    caloriesBurned.setText("");
+                                    caloriesCycling.setText("");
                                 }
                             })
                             .show();
@@ -120,21 +124,10 @@ public class Skipping extends AppCompatActivity {
             }
         });
 
-
-
-        btnMainSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Skipping.this,Main.class);
-                startActivity(intent);
-                finish();
-            }
-        });
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calculateAndDisplayCalories();
-
             }
         });
     }
@@ -143,24 +136,24 @@ public class Skipping extends AppCompatActivity {
         // Check if the timer is "00:00:00"
         if (tvTimer.getText().toString().equals("00:00:00")) {
             // Set the caloriesBurned EditText to empty
-            caloriesBurned.setText("");
-            Toast.makeText(Skipping.this, "Timer is zero. No calories burned.", Toast.LENGTH_SHORT).show();
+            caloriesCycling.setText("");
+            Toast.makeText(cycling.this, "Timer is zero. No calories burned.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        double MET = 6.0; // MET value for swimming (moderate pace)
+        double MET = 6.0; // MET value for cycling (moderate pace)
         double weight = 70.0; // User weight in kg (you might want to get this from user input)
 
         // Calculate time in hours
         double timeInHours = updateTime / 3600000.0;
 
-        // Calculate calories burned
+
         double caloriesBurnedValue = MET * weight * timeInHours;
 
-        // Display the result in the EditText
-        caloriesBurned.setText(String.format("%.2f", caloriesBurnedValue));
 
-        // Reset the timer and buttons
+        caloriesCycling.setText(String.format("%.2f", caloriesBurnedValue));
+
+
         tvTimer.setText("00:00:00");
         btnStart.setEnabled(true);
         btnPause.setEnabled(false);
@@ -168,9 +161,8 @@ public class Skipping extends AppCompatActivity {
         handler.removeCallbacks(updateTimerThread);
     }
 
-        @Override
-        public void onBackPressed()
-        {
+    @Override
+    public void onBackPressed() {
 
-        }
+    }
 }

@@ -40,4 +40,10 @@ public class Report_Main extends AppCompatActivity {
             finish();
         }
     }
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+
 }

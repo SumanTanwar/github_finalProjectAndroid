@@ -2,26 +2,29 @@ package com.example.finalprojectandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 public class RunningActivity extends AppCompatActivity {
 
+    Button btnMainRun, btnCalulate,btnSave;
+    TextView tvTimer;
+    Button btnStart, btnPause, btnReset;
+    EditText caloriedBurned;
 
-    Button btnMainRun;
-    private TextView tvTimer;
-    private Button btnStart, btnPause, btnReset;
-
-    private Handler handler = new Handler();
-    private long startTime = 0L;
-    private long timeInMillis = 0L;
-    private long timeSwapBuff = 0L;
-    private long updateTime = 0L;
+    Handler handler = new Handler();
+    long startTime = 0L;
+    long timeInMillis = 0L;
+    long timeSwapBuff = 0L;
+    long updateTime = 0L;
 
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
@@ -41,7 +44,10 @@ public class RunningActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running);
 
-        btnMainRun =findViewById(R.id.btnMainRun);
+        btnMainRun = findViewById(R.id.btnMainRun);
+        caloriedBurned = findViewById(R.id.caloriesBurned);
+        btnCalulate = findViewById(R.id.btnCalculateRun);
+        btnSave = findViewById(R.id.btnSaveCalories);
 
         tvTimer = findViewById(R.id.tvTimer);
         btnStart = findViewById(R.id.btnStart);
@@ -56,6 +62,7 @@ public class RunningActivity extends AppCompatActivity {
                 btnStart.setEnabled(false);
                 btnPause.setEnabled(true);
                 btnReset.setEnabled(true);
+                caloriedBurned.setText("");
             }
         });
 
@@ -81,6 +88,8 @@ public class RunningActivity extends AppCompatActivity {
                 btnStart.setEnabled(true);
                 btnPause.setEnabled(false);
                 btnReset.setEnabled(false);
+                caloriedBurned.setText("");
+
             }
         });
 
@@ -90,10 +99,75 @@ public class RunningActivity extends AppCompatActivity {
         btnMainRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RunningActivity.this,Main.class);
+                Intent intent = new Intent(RunningActivity.this, Main.class);
                 startActivity(intent);
                 finish();
             }
         });
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String caloryBurntString = caloriedBurned.getText().toString();
+                double caloryBurnt = 0.0;
+
+                try {
+                    caloryBurnt = Double.parseDouble(caloryBurntString);
+                } catch (NumberFormatException e) {
+                    // Handle the case where the input is not a valid number
+                    Toast.makeText(RunningActivity.this, "Invalid or No value...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (caloryBurnt != 0) {
+                    new AlertDialog.Builder(RunningActivity.this)
+                            .setTitle("Calories Saved")
+                            .setMessage("Your number of burnt calories are saved in the database for the weekly report.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    caloriedBurned.setText("");
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
+
+
+
+        btnCalulate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculateAndDisplayCalories();
+
+            }
+        });
+    }
+
+    private void calculateAndDisplayCalories() {
+        double MET = 8.0; // MET value for running (moderate pace)
+        double weight = 70.0; // User weight in kg (you might want to get this from user input)
+
+        tvTimer.setText("00:00:00");
+        btnStart.setEnabled(true);
+        btnPause.setEnabled(false);
+        btnReset.setEnabled(false);
+        handler.removeCallbacks(updateTimerThread);
+
+        // Calculate time in hours
+        double timeInHours = updateTime / 3600000.0;
+
+        // Calculate calories burned
+        double caloriesBurned = MET * weight * timeInHours;
+
+        // Display the result in the EditText
+        caloriedBurned.setText(String.format("%.2f", caloriesBurned));
+
+
+    }
+    @Override
+    public void onBackPressed()
+    {
+
     }
 }

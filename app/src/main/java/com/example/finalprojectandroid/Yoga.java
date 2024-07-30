@@ -2,8 +2,10 @@ package com.example.finalprojectandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -16,10 +18,9 @@ import android.widget.Toast;
 
 public class Yoga extends AppCompatActivity {
 
-    private CheckBox checkBoxMeditation, checkBoxSuryaNamaskar, checkBoxTreePose, checkBoxCobraPose, checkBoxShukhasana, checkBoxShabasana;
-    private EditText editTextCalories;
-    private Button buttonCalculate, buttonMain, btnReset;
-    private DatabaseHelper databaseHelper;
+     CheckBox checkBoxMeditation, checkBoxSuryaNamaskar, checkBoxTreePose, checkBoxCobraPose, checkBoxShukhasana, checkBoxShabasana;
+     EditText editTextCalories;
+     Button buttonCalculate, buttonMain, btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +33,14 @@ public class Yoga extends AppCompatActivity {
         checkBoxCobraPose = findViewById(R.id.checkBoxCobraPose);
         checkBoxShukhasana = findViewById(R.id.checkBoxShukhasana);
         checkBoxShabasana = findViewById(R.id.checkBoxShabasana);
+
         editTextCalories = findViewById(R.id.editTextCaloriesYoga);
+
         buttonCalculate = findViewById(R.id.caloriesCalculateYoga);
         buttonMain = findViewById(R.id.buttonMainYoga);
-        btnReset = findViewById(R.id.buttonResetYoga);
+        btnSave = findViewById(R.id.btnSaveCalories);
 
-        // Initialize DatabaseHelper
-        databaseHelper = new DatabaseHelper(this);
+
 
         buttonCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,9 +49,32 @@ public class Yoga extends AppCompatActivity {
             }
         });
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String caloryBurntString = editTextCalories.getText().toString();  // Updated variable
+                double caloryBurnt = 0.0;
+
+                try {
+                    caloryBurnt = Double.parseDouble(caloryBurntString);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(Yoga.this, "Invalid or No value...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (caloryBurnt != 0) {
+                    new AlertDialog.Builder(Yoga.this)
+                            .setTitle("Calories Saved")
+                            .setMessage("Your number of burnt calories are saved in the database for the weekly report.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    editTextCalories.setText("");  // Updated variable
+                                }
+                            })
+                            .show();
+                }
+
                 checkBoxMeditation.setChecked(false);
                 checkBoxSuryaNamaskar.setChecked(false);
                 checkBoxTreePose.setChecked(false);
@@ -57,8 +82,11 @@ public class Yoga extends AppCompatActivity {
                 checkBoxShukhasana.setChecked(false);
                 checkBoxShabasana.setChecked(false);
                 editTextCalories.setText("");
+
             }
         });
+
+
 
         buttonMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,50 +122,18 @@ public class Yoga extends AppCompatActivity {
 
         editTextCalories.setText(String.valueOf(caloriesBurned));
 
-        // Save the calories to the database
-        boolean isInserted = databaseHelper.insertCalories(caloriesBurned);
-        if (isInserted) {
-            Toast.makeText(this, "Calories saved", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Failed to save calories", Toast.LENGTH_SHORT).show();
-        }
 
-        // Clear the EditText field
-        editTextCalories.setText("");
+        checkBoxMeditation.setChecked(false);
+        checkBoxSuryaNamaskar.setChecked(false);
+        checkBoxTreePose.setChecked(false);
+        checkBoxCobraPose.setChecked(false);
+        checkBoxShukhasana.setChecked(false);
+        checkBoxShabasana.setChecked(false);
     }
 
-    private class DatabaseHelper extends SQLiteOpenHelper {
-        private static final String DATABASE_NAME = "calories.db";
-        private static final int DATABASE_VERSION = 1;
-        private static final String TABLE_NAME = "calories_table";
-        private static final String COLUMN_ID = "id";
-        private static final String COLUMN_CALORIES = "calories";
-
-        public DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_CALORIES + " INTEGER)";
-            db.execSQL(createTable);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-            onCreate(db);
-        }
-
-        public boolean insertCalories(int calories) {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(COLUMN_CALORIES, calories);
-
-            long result = db.insert(TABLE_NAME, null, contentValues);
-            return result != -1;
-        }
+    @Override
+    public void onBackPressed() {
+        // Prevent back button functionality
     }
+
 }

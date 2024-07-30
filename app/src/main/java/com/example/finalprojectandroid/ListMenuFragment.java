@@ -13,8 +13,8 @@ import androidx.fragment.app.ListFragment;
 
 public class ListMenuFragment extends ListFragment {
 
-    String[] activityNames = new String[]{"Running", "Skipping", "Swimming", "Cycling", "Exercise", "Yoga", "Total", "Comments"};
-    int[] calories = new int[]{300, 200, 250, 400, 350, 150, 1000, 0}; // Updated to int array
+    String[] activityNames = new String[]{"Running", "Skipping", "Swimming", "Cycling", "Exercise", "Yoga", "Total"};
+    int[] calories = new int[]{300, 200, 250, 400, 350, 150, 1000}; // Updated to int array
 
     @Nullable
     @Override

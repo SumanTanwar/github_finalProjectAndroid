@@ -90,12 +90,12 @@
             android:layout_marginTop="16dp"
             android:text="Calculate" />
         <Button
-            android:id="@+id/buttonResetExcercise"
+            android:id="@+id/btnSaveCalories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:text="     Reset    " />
+            android:text="      Save     " />
 
         <Button
             android:id="@+id/buttonMain"

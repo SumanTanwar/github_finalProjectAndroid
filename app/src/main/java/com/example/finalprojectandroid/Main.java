@@ -54,9 +54,17 @@ public class Main extends AppCompatActivity {
         txtTemprature = findViewById(R.id.temprature);
         txtMyProfile = findViewById(R.id.my_profile);
         textView = findViewById(R.id.user_details);
+
+        btnRunning = findViewById(R.id.running);
+        btnSkipping = findViewById(R.id.skipping);
+        btnSwimming = findViewById(R.id.swimming);
+        btnCycling = findViewById(R.id.cycling);
+        btnExercise = findViewById(R.id.excercise);
+        btnYoga = findViewById(R.id.yoga);
+
+
         btnWeeklyReport = findViewById(R.id.weeklyreport);
         txtSignOut = findViewById(R.id.signout);
-        btnRunning = findViewById(R.id.running);
 
 
         if (user == null) {
@@ -109,6 +117,49 @@ public class Main extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnSkipping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Main.this, Skipping.class);
+                startActivity(intent);
+            }
+        });
+
+        btnSwimming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Main.this, Swimming.class);
+                startActivity(intent);
+            }
+        });
+
+        btnCycling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Main.this, cycling.class);
+                startActivity(intent);
+            }
+        });
+
+        btnExercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Main.this, Exercise.class);
+                startActivity(intent);
+            }
+        });
+
+        btnYoga.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Main.this, Yoga.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         btnWeeklyReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +235,5 @@ public class Main extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Handle back press if needed
     }
 }

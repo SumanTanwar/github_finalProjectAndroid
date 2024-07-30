@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,7 +14,6 @@
         android:orientation="horizontal"
         android:gravity="left">
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +25,7 @@
             android:text="Cycling"/>
         <ImageView
             android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_height="130dp"
             android:src="@drawable/cycling"/>
     </LinearLayout>
 
@@ -35,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="1dp"
         android:layout_gravity="center">
 
         <TextView
@@ -102,12 +100,20 @@
         android:layout_height="wrap_content"
         android:text="Calculate"
         android:layout_margin="8dp" />
+
+    <Button
+        android:id="@+id/btnSaveCalories"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:text="Save "
+        android:layout_margin="5dp" />
+
+
     <Button
         android:id="@+id/btnMainCycle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Main Menu"
         android:layout_margin="8dp" />
-
 
 </LinearLayout>

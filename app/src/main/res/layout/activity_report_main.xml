@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="horizontal">
 
-    <!-- Fragment 1: ListMenuFragment -->
+
     <fragment
         android:id="@+id/fragment1"
         android:name="com.example.finalprojectandroid.ListMenuFragment"
@@ -13,7 +13,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent" />
 
-    <!-- Fragment 2: DetailsFragment -->
+
     <fragment
         android:id="@+id/fragment2"
         android:name="com.example.finalprojectandroid.DetailsFragment"
