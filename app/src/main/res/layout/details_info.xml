@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Calories Burnt"
-        android:layout_marginBottom="220dp"
+        android:layout_marginBottom="80dp"
         android:textSize="18sp" />
     <Button
         android:id="@+id/buttonGoToMain"
@@ -48,5 +48,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
         android:text="  Sign Out  " />
 </LinearLayout>

@@ -81,8 +81,6 @@ public class Yoga extends AppCompatActivity {
                 checkBoxCobraPose.setChecked(false);
                 checkBoxShukhasana.setChecked(false);
                 checkBoxShabasana.setChecked(false);
-                editTextCalories.setText("");
-
             }
         });
 
@@ -133,7 +131,7 @@ public class Yoga extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Prevent back button functionality
+
     }
 
 }

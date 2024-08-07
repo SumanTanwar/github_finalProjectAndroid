@@ -6,7 +6,8 @@
     android:gravity="center"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="12dp">
 
 
     <LinearLayout
@@ -21,13 +22,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="40dp"
-            android:textSize="40dp"
+            android:textSize="35dp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:text="Excercise"/>
         <ImageView
-            android:layout_width="190dp"
-            android:layout_height="150dp"
+            android:layout_width="170dp"
+            android:layout_height="130dp"
             android:layout_marginLeft="10dp"
             android:src="@drawable/excercising"/>
     </LinearLayout>

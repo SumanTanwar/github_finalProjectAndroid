@@ -139,8 +139,8 @@ public class Skipping extends AppCompatActivity {
         });
     }
 
-    private void calculateAndDisplayCalories() {
-        // Check if the timer is "00:00:00"
+    private void calculateAndDisplayCalories()
+    {
         if (tvTimer.getText().toString().equals("00:00:00")) {
             // Set the caloriesBurned EditText to empty
             caloriesBurned.setText("");

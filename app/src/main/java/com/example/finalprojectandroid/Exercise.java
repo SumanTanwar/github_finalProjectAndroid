@@ -36,13 +36,6 @@ public class Exercise extends AppCompatActivity {
         buttonMain = findViewById(R.id.buttonMain);
         btnSave = findViewById(R.id.btnSaveCalories);
 
-        buttonCalculate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calculateCalories();
-            }
-        });
-
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,13 +68,9 @@ public class Exercise extends AppCompatActivity {
                 checkBoxPullUps.setChecked(false);
                 checkBoxPlank.setChecked(false);
                 checkBoxSquat.setChecked(false);
-                editTextCalories.setText("");
 
             }
         });
-
-
-
 
         buttonMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,25 +80,35 @@ public class Exercise extends AppCompatActivity {
                     finish();
                 }
         });
+
+        buttonCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculateCalories();
+            }
+        });
+
+
     }
 
     private void calculateCalories() {
         int caloriesBurned = 0;
 
+
         if (checkBoxPushUps.isChecked()) {
-            caloriesBurned += 100; // Example value for Push Ups
+            caloriesBurned += 100;
         }
         if (checkBoxSitUps.isChecked()) {
-            caloriesBurned += 50; // Example value for Sit Ups
+            caloriesBurned += 50;
         }
         if (checkBoxPullUps.isChecked()) {
-            caloriesBurned += 120; // Example value for Pull Ups
+            caloriesBurned += 120;
         }
         if (checkBoxPlank.isChecked()) {
-            caloriesBurned += 80; // Example value for Plank
+            caloriesBurned += 80;
         }
         if (checkBoxSquat.isChecked()) {
-            caloriesBurned += 90; // Example value for Squat
+            caloriesBurned += 90;
         }
 
         checkBoxPushUps.setChecked(false);
@@ -120,11 +119,13 @@ public class Exercise extends AppCompatActivity {
 
         editTextCalories.setText(String.valueOf(caloriesBurned));
 
+
+
     }
 
     @Override
     public void onBackPressed() {
-        // Prevent back button functionality
+
     }
 
 }

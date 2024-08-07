@@ -144,9 +144,19 @@ public class RunningActivity extends AppCompatActivity {
         });
     }
 
-    private void calculateAndDisplayCalories() {
-        double MET = 8.0; // MET value for running (moderate pace)
-        double weight = 70.0; // User weight in kg (you might want to get this from user input)
+    private void calculateAndDisplayCalories()
+    {
+
+        if (tvTimer.getText().toString().equals("00:00:00")) {
+            // Set the caloriesBurned EditText to empty
+            caloriedBurned.setText("");
+            Toast.makeText(RunningActivity.this, "Timer is zero. No calories burned.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double MET = 8.0;
+        // MET value for running (moderate pace) ,,,,,,Calories Burned=MET×Weight×Time
+        double weight = 70.0;
 
         tvTimer.setText("00:00:00");
         btnStart.setEnabled(true);
