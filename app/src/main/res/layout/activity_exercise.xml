@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="12dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            android:textSize="35dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Excercise"/>
+        <ImageView
+            android:layout_width="170dp"
+            android:layout_height="130dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/excercising"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <CheckBox
+            android:id="@+id/checkBoxPushUps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="          Push Ups            3 * 20"
+            android:textStyle="bold"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxSitUps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="          Sit Ups                2 * 25"
+            android:textStyle="bold"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxPullUps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="          Pull Ups             2 * 15"
+            android:textStyle="bold"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxPlank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="          Plank                  3 * 2 min"
+            android:textStyle="bold"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxSquat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="          Squat                 3 * 15"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/editTextCalories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Calories Burned"
+            android:layout_marginTop="25dp"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/caloriesCalculate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Calculate" />
+        <Button
+            android:id="@+id/btnSaveCalories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="      Save     " />
+
+        <Button
+            android:id="@+id/buttonMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Main Menu" />
+
+    </LinearLayout>
+</LinearLayout>
