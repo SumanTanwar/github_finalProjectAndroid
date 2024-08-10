@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 
-import android.graphics.drawable.Drawable;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -32,14 +31,13 @@ public class NewUser extends AppCompatActivity {
 
     EditText nameEdit, emailEdit, passEdit, confirmPassEdit;
     Button registerButton;
-    TextView txtLogin,txtPolicy;
+    TextView txtLogin, txtPolicy;
     FirebaseAuth mAuth;
-    RadioGroup radioGroup;
     CheckBox checkboxPolicy;
     DatabaseReference mDatabase;
 
-     boolean isPasswordVisible = false;
-     boolean isConfirmPasswordVisible = false;
+    boolean isPasswordVisible = false;
+    boolean isConfirmPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,25 +49,15 @@ public class NewUser extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         nameEdit = findViewById(R.id.name);
-        radioGroup = findViewById(R.id.rdgrp);
         emailEdit = findViewById(R.id.emailCreateUser);
         passEdit = findViewById(R.id.passCreateUser);
         confirmPassEdit = findViewById(R.id.confirmPassCreateUser);
         checkboxPolicy = findViewById(R.id.checkPolicy);
         registerButton = findViewById(R.id.newUserRegister);
-<<<<<<< HEAD
-     //   signUpButton = findViewById(R.id.newUserSignUp);
-        txtSignIn = findViewById(R.id.txtNewUserSignIn);
-        radioGroup = findViewById(R.id.rdgrp);
-//        progressBar =findViewById(R.id.progressBar);
-=======
         txtLogin = findViewById(R.id.txtNewUserLogin);
         txtPolicy = findViewById(R.id.privacyPolicy);
->>>>>>> realTimeDatabase
-
 
         // Set on click listener for the eye icon
-
         passEdit.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (event.getRawX() >= (passEdit.getRight() - passEdit.getCompoundDrawables()[2].getBounds().width())) {
@@ -103,11 +91,6 @@ public class NewUser extends AppCompatActivity {
                     return;
                 }
 
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                if (selectedId == -1) {
-                    Toast.makeText(NewUser.this, "Please select a gender", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(NewUser.this, "Enter email", Toast.LENGTH_SHORT).show();
@@ -161,6 +144,7 @@ public class NewUser extends AppCompatActivity {
                 finish();
             }
         });
+
         txtPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,10 +153,7 @@ public class NewUser extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
-
 
     private void writeNewUser(String userId, String name, String email) {
         User user = new User(name, email);
@@ -206,6 +187,6 @@ public class NewUser extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        // Handle back press if needed
     }
 }
