@@ -195,15 +195,15 @@
             android:src="@drawable/report"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/signout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Out"
-        android:textStyle="bold"
-        android:textColor="@color/purple_700"
-        android:textSize="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="-38dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/signout"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Sign Out"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textColor="@color/purple_700"-->
+<!--        android:textSize="15dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_marginLeft="-38dp"/>-->
 
 </LinearLayout>

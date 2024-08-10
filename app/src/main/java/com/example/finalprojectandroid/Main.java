@@ -36,7 +36,7 @@ public class Main extends AppCompatActivity {
             btnCycling, btnExercise, btnYoga,
             btnWeeklyReport;
     FirebaseAuth auth;
-    TextView textView, txtSignOut, txtMyProfile, txtTemprature;
+    TextView textView, txtMyProfile, txtTemprature;
     FirebaseUser user;
     DatabaseReference mDatabase;
 
@@ -64,7 +64,7 @@ public class Main extends AppCompatActivity {
 
 
         btnWeeklyReport = findViewById(R.id.weeklyreport);
-        txtSignOut = findViewById(R.id.signout);
+       //  txtSignOut = findViewById(R.id.signout);
 
 
         if (user == null) {
@@ -169,15 +169,15 @@ public class Main extends AppCompatActivity {
             }
         });
 
-        txtSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), login.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        txtSignOut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                FirebaseAuth.getInstance().signOut();
+//                Intent intent = new Intent(getApplicationContext(), login.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
     }
 
     private class FetchWeatherTask extends AsyncTask<String, Void, String> {
