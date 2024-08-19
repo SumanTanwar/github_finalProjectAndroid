@@ -1,7 +1,5 @@
 package com.example.finalprojectandroid;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,12 +10,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Yoga extends AppCompatActivity {
 
@@ -36,6 +36,7 @@ public class Yoga extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Yoga calories");
 
+        // Initialize views
         checkBoxMeditation = findViewById(R.id.checkBoxMeditation);
         checkBoxSuryaNamaskar = findViewById(R.id.checkBoxSuryaNamaskar);
         checkBoxTreePose = findViewById(R.id.checkBoxTreePose);
@@ -45,9 +46,14 @@ public class Yoga extends AppCompatActivity {
 
         editTextCalories = findViewById(R.id.editTextCaloriesYoga);
 
-        buttonCalculate = findViewById(R.id.caloriesCalculateYoga);
+        buttonCalculate = findViewById(R.id.buttonCalculate);
         buttonMain = findViewById(R.id.buttonMainYoga);
         btnSave = findViewById(R.id.btnSaveCalories);
+
+        // Check if any view is null
+        if (buttonCalculate == null || buttonMain == null || btnSave == null) {
+            throw new NullPointerException("One or more views are null. Check your XML layout file.");
+        }
 
         buttonCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +93,8 @@ public class Yoga extends AppCompatActivity {
 
                     // Create a map to hold the data
                     Map<String, Object> data = new HashMap<>();
-                    data.put("calories ", caloryBurnt);
-                    data.put("date & Time ", dateTime);
+                    data.put("calories", caloryBurnt);
+                    data.put("dateTime", dateTime);
 
                     // Save data to Firebase
                     databaseReference.child(userId).child(id).setValue(data);
@@ -103,8 +109,7 @@ public class Yoga extends AppCompatActivity {
                                 }
                             })
                             .show();
-                }
-                else{
+                } else {
                     Toast.makeText(Yoga.this, "No calories burnt...", Toast.LENGTH_SHORT).show();
                 }
 
@@ -161,6 +166,6 @@ public class Yoga extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //  you are an idiot
+        // Handle back press if necessary
     }
 }
