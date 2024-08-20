@@ -46,10 +46,10 @@ public class DetailsFragment extends Fragment {
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Yoga calories");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Yoga calories"); // Ensure this path is correct
 
-        // Fetch data for a specific date and time
-        String selectedDateTime = "2024-08-14 15:30"; // Example date/time
+        // Example date/time for testing; update this as needed
+        String selectedDateTime = "2024-08-14 15:30";
         fetchCaloriesData(selectedDateTime);
 
         btnMain.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +81,7 @@ public class DetailsFragment extends Fragment {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 Map<String, Object> data = (Map<String, Object>) dataSnapshot.getValue();
                                 if (data != null) {
-                                    String activityName = "Yoga"; // Adjust based on actual activity name
+                                    String activityName = "Yoga"; // Hardcoded, adjust if necessary
                                     Object caloriesValue = data.get("calories");
                                     int caloriesBurned = 0;
 
@@ -90,6 +90,7 @@ public class DetailsFragment extends Fragment {
                                     } else if (caloriesValue instanceof Long) {
                                         caloriesBurned = ((Long) caloriesValue).intValue();
                                     } else {
+                                        // Log unexpected data type
                                         System.err.println("Unexpected data type for calories: " + caloriesValue.getClass().getName());
                                         continue;
                                     }
@@ -98,12 +99,15 @@ public class DetailsFragment extends Fragment {
                                 }
                             }
                         } else {
+                            // Log if no data is found
                             System.out.println("No data found for the selected date/time");
+                            change("No Data", 0); // Optional: Handle no data case
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                        // Log error
                         System.err.println("Error fetching data: " + error.getMessage());
                     }
                 });
@@ -111,7 +115,9 @@ public class DetailsFragment extends Fragment {
 
     public void change(String activityName, int caloriesBurned) {
         // Update the TextViews with the activity name and calories burned
-        activity.setText(activityName);
-        calories.setText(String.valueOf(caloriesBurned));
+        if (activity != null && calories != null) {
+            activity.setText(activityName);
+            calories.setText(String.valueOf(caloriesBurned));
+        }
     }
 }

@@ -94,7 +94,7 @@ public class Yoga extends AppCompatActivity {
                     // Create a map to hold the data
                     Map<String, Object> data = new HashMap<>();
                     data.put("calories", caloryBurnt);
-                    data.put("dateTime", dateTime);
+                    data.put("date  &  time", dateTime);
 
                     // Save data to Firebase
                     databaseReference.child(userId).child(id).setValue(data);
@@ -113,6 +113,7 @@ public class Yoga extends AppCompatActivity {
                     Toast.makeText(Yoga.this, "No calories burnt...", Toast.LENGTH_SHORT).show();
                 }
 
+                // Reset checkboxes
                 checkBoxMeditation.setChecked(false);
                 checkBoxSuryaNamaskar.setChecked(false);
                 checkBoxTreePose.setChecked(false);
@@ -156,6 +157,7 @@ public class Yoga extends AppCompatActivity {
 
         editTextCalories.setText(String.valueOf(caloriesBurned));
 
+        // Reset checkboxes
         checkBoxMeditation.setChecked(false);
         checkBoxSuryaNamaskar.setChecked(false);
         checkBoxTreePose.setChecked(false);
