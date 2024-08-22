@@ -23,35 +23,40 @@ import java.util.Map;
 
 public class DetailsFragment extends Fragment {
 
-    TextView activity, calories;
-    Button btnMain, btnSignOut;
+    private TextView activity, calories, message;
+    private Button btnMain, btnSignOut;
 
-    FirebaseAuth mAuth;
-    DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
 
     // Required empty public constructor
     public DetailsFragment() {
+        // The public DetailsFragment() constructor is necessary for proper fragment instantiation
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.details_info, container, false);
 
-        // Initialize views
+        // Initialize UI elements
         activity = view.findViewById(R.id.activity);
         calories = view.findViewById(R.id.calories);
+        message = view.findViewById(R.id.message);
         btnMain = view.findViewById(R.id.buttonGoToMain);
         btnSignOut = view.findViewById(R.id.btnSignOut);
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Yoga calories"); // Ensure this path is correct
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        // Example date/time for testing; update this as needed
-        String selectedDateTime = "2024-08-14 15:30";
-        fetchCaloriesData(selectedDateTime);
+        // Fetch data
+        fetchCaloriesData();
 
+        // Set up button listeners
         btnMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +68,7 @@ public class DetailsFragment extends Fragment {
         btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getActivity(), login.class);
                 startActivity(intent);
             }
@@ -71,53 +77,53 @@ public class DetailsFragment extends Fragment {
         return view;
     }
 
-    private void fetchCaloriesData(String dateFilter) {
+    private void fetchCaloriesData() {
         String userId = mAuth.getCurrentUser().getUid();
-        databaseReference.child(userId).orderByChild("dateTime").equalTo(dateFilter)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                Map<String, Object> data = (Map<String, Object>) dataSnapshot.getValue();
-                                if (data != null) {
-                                    String activityName = "Yoga"; // Hardcoded, adjust if necessary
-                                    Object caloriesValue = data.get("calories");
-                                    int caloriesBurned = 0;
+        DatabaseReference userRef = databaseReference.child(userId);
 
-                                    if (caloriesValue instanceof Double) {
-                                        caloriesBurned = ((Double) caloriesValue).intValue();
-                                    } else if (caloriesValue instanceof Long) {
-                                        caloriesBurned = ((Long) caloriesValue).intValue();
-                                    } else {
-                                        // Log unexpected data type
-                                        System.err.println("Unexpected data type for calories: " + caloriesValue.getClass().getName());
-                                        continue;
-                                    }
-
-                                    change(activityName, caloriesBurned);
-                                }
-                            }
-                        } else {
-                            // Log if no data is found
-                            System.out.println("No data found for the selected date/time");
-                            change("No Data", 0); // Optional: Handle no data case
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int totalCalories = 0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Map<String, Object> data = (Map<String, Object>) dataSnapshot.getValue();
+                    if (data != null) {
+                        Object caloriesValue = data.get("calories");
+                        if (caloriesValue instanceof Double) {
+                            totalCalories += ((Double) caloriesValue).intValue();
+                        } else if (caloriesValue instanceof Long) {
+                            totalCalories += ((Long) caloriesValue).intValue();
                         }
                     }
+                }
+                // Update UI with the fetched data
+                change("Calories Burnt", totalCalories);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Log error
-                        System.err.println("Error fetching data: " + error.getMessage());
-                    }
-                });
+                // Show message if total calories exceed 200
+                showCongratulationsMessageIfNeeded(totalCalories);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle errors here, if necessary
+            }
+        });
     }
 
     public void change(String activityName, int caloriesBurned) {
         // Update the TextViews with the activity name and calories burned
         if (activity != null && calories != null) {
             activity.setText(activityName);
-            calories.setText(String.valueOf(caloriesBurned));
+            this.calories.setText(String.valueOf(caloriesBurned));
+        }
+    }
+
+    public void showCongratulationsMessageIfNeeded(int totalCalories) {
+        if (totalCalories > 200) {
+            message.setVisibility(View.VISIBLE);
+            message.setText("Congratulations! Doing great!");
+        } else {
+            message.setVisibility(View.GONE);
         }
     }
 }

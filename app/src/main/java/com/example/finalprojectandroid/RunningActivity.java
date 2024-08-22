@@ -18,22 +18,21 @@ import android.widget.Toast;
 import java.util.Map;
 import java.util.HashMap;
 
-
 public class RunningActivity extends AppCompatActivity {
 
-    Button btnMainRun, btnCalculate, btnSave;
-    TextView tvTimer;
-    Button btnStart, btnPause, btnReset;
-    EditText caloriedBurned;
+    private Button btnMainRun, btnCalculate, btnSave;
+    private TextView tvTimer;
+    private Button btnStart, btnPause, btnReset;
+    private EditText caloriesBurned;
 
-    DatabaseReference databaseReference;
-    FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
 
-    Handler handler = new Handler();
-    long startTime = 0L;
-    long timeInMillis = 0L;
-    long timeSwapBuff = 0L;
-    long updateTime = 0L;
+    private Handler handler = new Handler();
+    private long startTime = 0L;
+    private long timeInMillis = 0L;
+    private long timeSwapBuff = 0L;
+    private long updateTime = 0L;
 
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
@@ -57,16 +56,17 @@ public class RunningActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Running calories");
 
+        // Initialize Views
         btnMainRun = findViewById(R.id.btnMainRun);
-        caloriedBurned = findViewById(R.id.caloriesBurned);
-        btnCalculate = findViewById(R.id.btnCalculateRun);
-        btnSave = findViewById(R.id.btnSaveCalories);
-
         tvTimer = findViewById(R.id.tvTimer);
         btnStart = findViewById(R.id.btnStart);
         btnPause = findViewById(R.id.btnPause);
         btnReset = findViewById(R.id.btnReset);
+        caloriesBurned = findViewById(R.id.caloriesBurned);
+        btnSave = findViewById(R.id.btnSaveCalories);
+        btnCalculate = findViewById(R.id.btnCalculateRun);
 
+        // Start button listener
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,10 +75,11 @@ public class RunningActivity extends AppCompatActivity {
                 btnStart.setEnabled(false);
                 btnPause.setEnabled(true);
                 btnReset.setEnabled(true);
-                caloriedBurned.setText("");
+                caloriesBurned.setText("");
             }
         });
 
+        // Pause button listener
         btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,25 +90,31 @@ public class RunningActivity extends AppCompatActivity {
             }
         });
 
+        // Reset button listener
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startTime = 0L;
-                timeInMillis = 0L;
-                timeSwapBuff = 0L;
-                updateTime = 0L;
-                tvTimer.setText("00:00:00");
-                handler.removeCallbacks(updateTimerThread);
-                btnStart.setEnabled(true);
-                btnPause.setEnabled(false);
-                btnReset.setEnabled(false);
-                caloriedBurned.setText("");
+                resetTimer();
             }
         });
 
-        btnPause.setEnabled(false);
-        btnReset.setEnabled(false);
+        // Save button listener
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveCalorieData();
+            }
+        });
 
+        // Calculate button listener
+        btnCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculateAndDisplayCalories();
+            }
+        });
+
+        // Main button listener
         btnMainRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,86 +124,43 @@ public class RunningActivity extends AppCompatActivity {
             }
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String caloryBurntString = caloriedBurned.getText().toString();
-                double caloryBurnt = 0.0;
-
-                if (caloryBurntString.isEmpty()) {
-                    Toast.makeText(RunningActivity.this, "Please enter a value...", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                try {
-                    caloryBurnt = Double.parseDouble(caloryBurntString);
-                } catch (NumberFormatException e) {
-                    Toast.makeText(RunningActivity.this, "Invalid value...", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (caloryBurnt > 0) {
-                    // Get current date and time
-                    long currentTimeMillis = System.currentTimeMillis();
-                    String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd  &  HH:mm", java.util.Locale.getDefault()).format(new java.util.Date(currentTimeMillis));
-
-                    // Use Firebase Authentication to get the user ID
-                    String userId = mAuth.getCurrentUser().getUid();
-
-                    // Create a unique ID for the entry
-                    String id = databaseReference.push().getKey();
-
-                    // Create a map to hold the data
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("calories", caloryBurnt);
-                    data.put("date  &  time", dateTime);
-
-                    // Save data to Firebase
-                    databaseReference.child(userId).child(id).setValue(data);
-
-                    new AlertDialog.Builder(RunningActivity.this)
-                            .setTitle("Calories Saved")
-                            .setMessage("Your number of burnt calories and the date are saved in the database for the weekly report.")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    caloriedBurned.setText("");
-                                }
-                            })
-                            .show();
-                } else {
-                    Toast.makeText(RunningActivity.this, "Calories burned must be greater than zero.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        btnCalculate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calculateAndDisplayCalories();
-            }
-        });
+        // Initially disable Pause and Reset buttons
+        btnPause.setEnabled(false);
+        btnReset.setEnabled(false);
     }
+
+    private void resetTimer() {
+        startTime = 0L;
+        timeInMillis = 0L;
+        timeSwapBuff = 0L;
+        updateTime = 0L;
+        tvTimer.setText("00:00:00");
+        handler.removeCallbacks(updateTimerThread);
+        btnStart.setEnabled(true);
+        btnPause.setEnabled(false);
+        btnReset.setEnabled(false);
+        caloriesBurned.setText("");
+    }
+
 
     private void calculateAndDisplayCalories() {
         if (tvTimer.getText().toString().equals("00:00:00")) {
-            caloriedBurned.setText("");
+            caloriesBurned.setText("");
             Toast.makeText(RunningActivity.this, "Timer is zero. No calories burned.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        double MET = 8.0; // MET value for running (moderate pace)
+        double MET = 12.3; // MET value for skipping
         double weight = 70.0; // User weight in kg
 
         // Calculate time in hours
         double timeInHours = updateTime / 3600000.0;
 
         // Calculate calories burned
-        double caloriesBurned = MET * weight * timeInHours;
+        double caloriesBurnedValue = MET * weight * timeInHours;
 
         // Display the result in the EditText
-        caloriedBurned.setText(String.format("%.2f", caloriesBurned));
+        caloriesBurned.setText(String.format("%.2f", caloriesBurnedValue));
         tvTimer.setText("00:00:00");
         handler.removeCallbacks(updateTimerThread);
         btnStart.setEnabled(true);
@@ -204,8 +168,53 @@ public class RunningActivity extends AppCompatActivity {
         btnReset.setEnabled(false);
     }
 
+
+    private void saveCalorieData() {
+        String calorieBurntString = caloriesBurned.getText().toString();
+        double calorieBurnt = 0.0;
+
+        if (calorieBurntString.isEmpty()) {
+            Toast.makeText(RunningActivity.this, "Please enter a value...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            calorieBurnt = Double.parseDouble(calorieBurntString);
+        } catch (NumberFormatException e) {
+            Toast.makeText(RunningActivity.this, "Invalid value...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (calorieBurnt > 0) {
+            String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd  &  HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
+
+            String userId = mAuth.getCurrentUser().getUid();
+            String id = databaseReference.push().getKey();
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("calories", calorieBurnt);
+            data.put("date  &  time", dateTime);
+
+            databaseReference.child(userId).child(id).setValue(data);
+
+            new AlertDialog.Builder(RunningActivity.this)
+                    .setTitle("Calories Saved")
+                    .setMessage("Your number of burnt calories and the date are saved in the database for the weekly report.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            caloriesBurned.setText("");
+                        }
+                    })
+                    .show();
+        } else {
+            Toast.makeText(RunningActivity.this, "Calories burned must be greater than zero.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        // Add any functionality for when the back button is pressed, if needed.
+        super.onBackPressed();
     }
+
 }
