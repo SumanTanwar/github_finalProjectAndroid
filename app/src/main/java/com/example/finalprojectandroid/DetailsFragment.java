@@ -2,6 +2,8 @@ package com.example.finalprojectandroid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,9 +123,19 @@ public class DetailsFragment extends Fragment {
     public void showCongratulationsMessageIfNeeded(int totalCalories) {
         if (totalCalories > 200) {
             message.setVisibility(View.VISIBLE);
-            message.setText("Congratulations! Doing great!");
+            message.setText("!Doing great!");
+
+            // Create a Handler to post a delayed task
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    message.setVisibility(View.GONE);
+                }
+            }, 3000); // 3000 milliseconds = 3 seconds
         } else {
             message.setVisibility(View.GONE);
         }
     }
+
 }
