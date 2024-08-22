@@ -18,6 +18,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import kotlinx.coroutines.scheduling.Task;
+
 public class MyProfile extends AppCompatActivity {
 
     TextView profilename, profileemail;
@@ -60,28 +64,59 @@ public class MyProfile extends AppCompatActivity {
                     .setMessage("Are you sure you want to delete your profile?")
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                         String mainusername = profilename.getText().toString().trim();
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+                        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
-                        Query checkuserData = reference.orderByChild("name").equalTo(mainusername);
+                        Query checkuserData = usersRef.orderByChild("name").equalTo(mainusername);
                         checkuserData.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
                                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                                        // Get user ID from snapshot
+                                        String userId = userSnapshot.getKey();
+                                        if (userId == null) {
+                                            Toast.makeText(MyProfile.this, "User ID not found", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
                                         // Remove user from Realtime DB
                                         userSnapshot.getRef().removeValue();
-                                    }
 
-                                    // Remove user from FB Auth
-                                    FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(task -> {
-                                        if (task.isSuccessful()) {
-                                            Intent intent = new Intent(MyProfile.this, login.class);
-                                            startActivity(intent);
-                                            finish();
-                                        } else {
-                                            Toast.makeText(MyProfile.this, "Failed to delete user from authentication", Toast.LENGTH_SHORT).show();
+                                        // References to delete
+                                        DatabaseReference[] calorieRefs = {
+                                                FirebaseDatabase.getInstance().getReference("Running calories").child(userId),
+                                                FirebaseDatabase.getInstance().getReference("Skipping calories").child(userId),
+                                                FirebaseDatabase.getInstance().getReference("Swimming calories").child(userId),
+                                                FirebaseDatabase.getInstance().getReference("Cycling calories").child(userId),
+                                                FirebaseDatabase.getInstance().getReference("Exercise calories").child(userId),
+                                                FirebaseDatabase.getInstance().getReference("Yoga calories").child(userId)
+                                        };
+
+                                        // Track completion of all deletions
+                                        final int totalDeletions = calorieRefs.length;
+                                        final AtomicInteger deletionsCompleted = new AtomicInteger(0);
+
+                                        for (DatabaseReference ref : calorieRefs) {
+                                            ref.removeValue().addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    if (deletionsCompleted.incrementAndGet() == totalDeletions) {
+                                                        // All deletions completed, now delete Firebase Auth user
+                                                        FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(authTask -> {
+                                                            if (authTask.isSuccessful()) {
+                                                                Intent intent = new Intent(MyProfile.this, login.class);
+                                                                startActivity(intent);
+                                                                finish();
+                                                            } else {
+                                                                Toast.makeText(MyProfile.this, "Failed to delete user from authentication", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                                    }
+                                                } else {
+                                                    Toast.makeText(MyProfile.this, "Failed to delete some user data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                         }
-                                    });
+                                    }
                                 } else {
                                     Toast.makeText(MyProfile.this, "User not found", Toast.LENGTH_SHORT).show();
                                 }
@@ -96,6 +131,7 @@ public class MyProfile extends AppCompatActivity {
                     .setNegativeButton(android.R.string.no, null)
                     .show();
         });
+
 
 
         editprofile.setOnClickListener(view -> {
