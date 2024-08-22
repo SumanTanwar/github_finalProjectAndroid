@@ -1,7 +1,6 @@
 package com.example.finalprojectandroid;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,19 +24,16 @@ import java.util.Map;
 
 public class ListMenuFragment extends ListFragment {
 
-    private static final String TAG = "ListMenuFragment";
+    private String[] activityNames = new String[]{"Running", "Skipping", "Swimming", "Cycling", "Exercise", "Yoga", "Total"};
+    private int[] calories = new int[activityNames.length]; // Array for storing calories
 
-    String[] activityNames = new String[]{"Running", "Skipping", "Swimming", "Cycling", "Exercise", "Yoga", "Total"};
-    int[] calories = new int[activityNames.length]; // Array for storing calories
-
-    FirebaseAuth mAuth;
-
-    DatabaseReference runningDatabaseReference;
-    DatabaseReference skippingDatabaseReference;
-    DatabaseReference swimmingDatabaseReference;
-    DatabaseReference cyclingDatabaseReference;
-    DatabaseReference exerciseDatabaseReference;
-    DatabaseReference yogaDatabaseReference;
+    private FirebaseAuth mAuth;
+    private DatabaseReference runningDatabaseReference;
+    private DatabaseReference skippingDatabaseReference;
+    private DatabaseReference swimmingDatabaseReference;
+    private DatabaseReference cyclingDatabaseReference;
+    private DatabaseReference exerciseDatabaseReference;
+    private DatabaseReference yogaDatabaseReference;
 
     @Nullable
     @Override
@@ -44,10 +42,9 @@ public class ListMenuFragment extends ListFragment {
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
-
         runningDatabaseReference = FirebaseDatabase.getInstance().getReference("Running calories");
         skippingDatabaseReference = FirebaseDatabase.getInstance().getReference("Skipping calories");
-        swimmingDatabaseReference = FirebaseDatabase.getInstance().getReference("Swimming calories"); // Fixed typo
+        swimmingDatabaseReference = FirebaseDatabase.getInstance().getReference("Swimming calories");
         cyclingDatabaseReference = FirebaseDatabase.getInstance().getReference("Cycling calories");
         exerciseDatabaseReference = FirebaseDatabase.getInstance().getReference("Exercise calories");
         yogaDatabaseReference = FirebaseDatabase.getInstance().getReference("Yoga calories");
@@ -71,9 +68,18 @@ public class ListMenuFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
         if (position >= 0 && position < activityNames.length) {
-            DetailsFragment detailsFragment = (DetailsFragment) getFragmentManager().findFragmentById(R.id.fragment2);
-            if (detailsFragment != null) {
-                detailsFragment.change(activityNames[position], calories[position]);
+            if (position == 6) { // Total item clicked
+                DetailsFragment detailsFragment = (DetailsFragment) getFragmentManager().findFragmentById(R.id.fragment2);
+                if (detailsFragment != null) {
+                    detailsFragment.change("Total Calories", calories[position]);
+                    // Trigger message display
+                    detailsFragment.showCongratulationsMessageIfNeeded(calories[position]);
+                }
+            } else {
+                DetailsFragment detailsFragment = (DetailsFragment) getFragmentManager().findFragmentById(R.id.fragment2);
+                if (detailsFragment != null) {
+                    detailsFragment.change(activityNames[position], calories[position]);
+                }
             }
             getListView().setItemChecked(position, true);
         }
@@ -91,32 +97,31 @@ public class ListMenuFragment extends ListFragment {
     }
 
     private void fetchCaloriesFromDatabase(DatabaseReference databaseRef, final int index) {
-        databaseRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int totalCalories = 0;
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Map<String, Object> data = (Map<String, Object>) dataSnapshot.getValue();
-                    if (data != null) {
-                        Object caloriesObject = data.get("calories");
-                        if (caloriesObject instanceof Long) {
-                            totalCalories += ((Long) caloriesObject).intValue();
-                        } else if (caloriesObject instanceof Double) {
-                            totalCalories += ((Double) caloriesObject).intValue();
+        databaseRef.child(mAuth.getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int totalCalories = 0;
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Map<String, Object> data = (Map<String, Object>) dataSnapshot.getValue();
+                            if (data != null) {
+                                Object caloriesObject = data.get("calories");
+                                if (caloriesObject instanceof Long) {
+                                    totalCalories += ((Long) caloriesObject).intValue();
+                                } else if (caloriesObject instanceof Double) {
+                                    totalCalories += ((Double) caloriesObject).intValue();
+                                }
+                            }
                         }
+                        calories[index] = totalCalories;
+                        calories[6] = calories[0] + calories[1] + calories[2] + calories[3] + calories[4] + calories[5]; // Update total calories index
+                        ((ArrayAdapter<?>) getListAdapter()).notifyDataSetChanged();
                     }
-                }
-                Log.d(TAG, "Total Calories for index " + index + ": " + totalCalories);
-                calories[index] = totalCalories;
-                calories[6] = calories[0] + calories[1] + calories[2] + calories[3] + calories[4] + calories[5]; // Update total calories index
-                ((ArrayAdapter<?>) getListAdapter()).notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle possible errors
-                Log.e(TAG, "Error fetching data: " + error.getMessage());
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle errors here, if necessary
+                    }
+                });
     }
 }

@@ -19,7 +19,7 @@
         android:layout_gravity="center"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:text="Weekly Report"
+        android:text="Daily Report"
         android:layout_marginBottom="50dp"/>
     <TextView
         android:id="@+id/activity"
@@ -35,8 +35,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Calories Burnt"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="60dp"
         android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textStyle="bold"
+        android:textSize="18dp" />
+
     <Button
         android:id="@+id/buttonGoToMain"
         android:layout_width="wrap_content"

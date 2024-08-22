@@ -186,7 +186,7 @@
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="Weekly Report"/>
+            android:text="Daily Report"/>
 
         <ImageView
             android:layout_width="80dp"
