@@ -39,6 +39,15 @@
         android:text=""
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/linkDeleteAllCalories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete All Calories"
+        android:textColor="@android:color/holo_red_dark"
+        android:padding="16dp"
+        android:gravity="center"
+        android:textSize="16sp"/>
 
 
     <Button
