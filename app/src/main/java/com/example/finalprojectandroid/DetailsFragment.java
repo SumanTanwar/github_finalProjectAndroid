@@ -1,5 +1,6 @@
 package com.example.finalprojectandroid;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,13 +21,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DetailsFragment extends Fragment {
 
-    private TextView activity, calories, message;
+    private TextView activity, calories, message, linkDeleteAllCalories;
     private Button btnMain, btnSignOut;
 
     private FirebaseAuth mAuth;
@@ -40,8 +43,7 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState)
-    {
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.details_info, container, false);
 
         // Initialize UI elements
@@ -50,6 +52,7 @@ public class DetailsFragment extends Fragment {
         message = view.findViewById(R.id.message);
         btnMain = view.findViewById(R.id.buttonGoToMain);
         btnSignOut = view.findViewById(R.id.btnSignOut);
+        linkDeleteAllCalories = view.findViewById(R.id.linkDeleteAllCalories);
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -59,21 +62,24 @@ public class DetailsFragment extends Fragment {
         fetchCaloriesData();
 
         // Set up button listeners
-        btnMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Main.class);
-                startActivity(intent);
-            }
+        btnMain.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), Main.class);
+            startActivity(intent);
         });
 
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), login.class);
-                startActivity(intent);
-            }
+        btnSignOut.setOnClickListener(view1 -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getActivity(), login.class);
+            startActivity(intent);
+        });
+
+        linkDeleteAllCalories.setOnClickListener(view1 -> {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Delete All Calories")
+                    .setMessage("Are you sure you want to delete all calorie data?")
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteAllCalories())
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
         });
 
         return view;
@@ -88,14 +94,11 @@ public class DetailsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int totalCalories = 0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Map<String, Object> data = (Map<String, Object>) dataSnapshot.getValue();
-                    if (data != null) {
-                        Object caloriesValue = data.get("calories");
-                        if (caloriesValue instanceof Double) {
-                            totalCalories += ((Double) caloriesValue).intValue();
-                        } else if (caloriesValue instanceof Long) {
-                            totalCalories += ((Long) caloriesValue).intValue();
-                        }
+                    Object caloriesValue = dataSnapshot.child("calories").getValue();
+                    if (caloriesValue instanceof Double) {
+                        totalCalories += ((Double) caloriesValue).intValue();
+                    } else if (caloriesValue instanceof Long) {
+                        totalCalories += ((Long) caloriesValue).intValue();
                     }
                 }
                 // Update UI with the fetched data
@@ -107,9 +110,38 @@ public class DetailsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle errors here, if necessary
+                Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void deleteAllCalories() {
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference[] calorieRefs = {
+                FirebaseDatabase.getInstance().getReference("Running calories").child(userId),
+                FirebaseDatabase.getInstance().getReference("Skipping calories").child(userId),
+                FirebaseDatabase.getInstance().getReference("Swimming calories").child(userId),
+                FirebaseDatabase.getInstance().getReference("Cycling calories").child(userId),
+                FirebaseDatabase.getInstance().getReference("Exercise calories").child(userId),
+                FirebaseDatabase.getInstance().getReference("Yoga calories").child(userId)
+        };
+
+        // Track completion of all deletions
+        final int totalDeletions = calorieRefs.length;
+        final AtomicInteger deletionsCompleted = new AtomicInteger(0);
+
+        for (DatabaseReference ref : calorieRefs) {
+            ref.removeValue()
+                    .addOnSuccessListener(aVoid -> {
+                        if (deletionsCompleted.incrementAndGet() == totalDeletions) {
+                            // All deletions completed
+                            change("Calories Burnt", 0); // Update UI
+                            message.setVisibility(View.GONE); // Hide the message
+                            Toast.makeText(getActivity(), "All calories data has been deleted", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to delete some calories data", Toast.LENGTH_SHORT).show());
+        }
     }
 
     public void change(String activityName, int caloriesBurned) {
@@ -127,15 +159,9 @@ public class DetailsFragment extends Fragment {
 
             // Create a Handler to post a delayed task
             Handler handler = new Handler(Looper.getMainLooper());
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    message.setVisibility(View.GONE);
-                }
-            }, 3000); // 3000 milliseconds = 3 seconds
+            handler.postDelayed(() -> message.setVisibility(View.GONE), 3000); // 3000 milliseconds = 3 seconds
         } else {
             message.setVisibility(View.GONE);
         }
     }
-
 }
